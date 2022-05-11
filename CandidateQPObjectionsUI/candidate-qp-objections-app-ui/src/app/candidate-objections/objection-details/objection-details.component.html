@@ -1,0 +1,60 @@
+<h3>Objection Details</h3>
+<hr>
+<div class="container">
+    
+    <div class="form-group row" id="centeredDiv">
+        <span>
+            <button type="button" class="questionDetails" (click)="addObjectionForm()">
+                Add Objection
+            </button>
+        </span>
+    </div>
+
+    <div class="row">
+        <hr />
+        <div class="create-objection-container col-md-12">
+            <form class="post-form" #objectionsForm="ngForm" (ngSubmit)="saveObjection(objectionsForm)">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Question Number</th>
+                            <th scope="col">Issue Type</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="objectionsLoaded | async">
+                        <h1>{{ objections }}</h1>
+                        <tr *ngFor="let objection of objections; let i = index">
+                            <td>
+                                <input type="text" class="form-control" 
+                                    id="objection.codSubjectId+i" style="margin-top: 5px"
+                                    placeholder="Subject" ngModel name="objection.codSubjectId+i" required disabled
+                                >
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" 
+                                    id="objection.codQuestionNumber+i" style="margin-top: 5px"
+                                    placeholder="Question Number" ngModel name="objection.codQuestionNumber+i" required disabled
+                                >
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" 
+                                    id="objection.codIssueType+i" style="margin-top: 5px"
+                                    placeholder="Issue Type" ngModel name="objection.codIssueType+i" required disabled
+                                >
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" 
+                                    id="objection.codDescription+i" style="margin-top: 5px"
+                                    placeholder="Description" ngModel name="objection.codDescription+i" required disabled
+                                >
+                            </td>
+                        </tr>
+                      </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</div>

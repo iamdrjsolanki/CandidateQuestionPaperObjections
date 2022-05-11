@@ -1,0 +1,35 @@
+#centeredDiv { 
+    margin-right: auto; 
+    margin-left: auto; 
+    width: 150px; 
+}
+
+.questionDetails {
+    background-color: #0079D3;
+    border-color: #0079D3;
+    color: aliceblue;
+    fill: #0079D3;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 3px 16px;
+    opacity: 1;
+}
+
+.create-objection-container {
+  margin-top: 10px;
+  --post-line-color: #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #878A8C;
+  position: relative;
+  padding: 5px;
+}
+

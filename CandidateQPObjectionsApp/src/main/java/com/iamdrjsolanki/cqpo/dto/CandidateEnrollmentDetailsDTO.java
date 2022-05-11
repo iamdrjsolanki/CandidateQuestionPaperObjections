@@ -2,6 +2,7 @@ package com.iamdrjsolanki.cqpo.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class CandidateEnrollmentDetailsDTO {
 	private String cedExamTime;
 	private List<SubjectDetailsDTO> subjects;
 	private List<QuestionPaperDetailsDTO> questions;
+	private Map<String, QuestionPaperDetailsDTO> subjectsQuestionsMap;
 
 }

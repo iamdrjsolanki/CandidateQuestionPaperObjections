@@ -1,10 +1,12 @@
 package com.iamdrjsolanki.cqpo.util;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtil {
 
     private String SECRET_KEY = "$eqreTikeY4RcAnd1DAt3kUST10n9A93r509j3c10n57VVT";
+    
+    @Value("${jwt.expiration.time}")
+	private Long jwtExpirationTimeInMillis;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -44,14 +49,30 @@ public class JwtUtil {
 
     private String createToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+        return Jwts.builder()
+        		.setClaims(claims)
+        		.setSubject(subject)
+        		.setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationTimeInMillis)))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+    
+    public Long getExpirationTime() {
+		return jwtExpirationTimeInMillis;
+	}
+    
+    public String generateTokenWithUsername(String username) {
+		return Jwts.builder()
+				.setSubject(username)
+				.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+				.setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationTimeInMillis)))
+				.compact();
+	}
     
 }

@@ -1,5 +1,10 @@
 package com.iamdrjsolanki.cqpo.service;
 
+import java.time.Instant;
+
+import javax.validation.Valid;
+
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -8,8 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.iamdrjsolanki.cqpo.dto.CandidateEnrollmentDetailsDTO;
-import com.iamdrjsolanki.cqpo.model.AuthenticationReponse;
+import com.iamdrjsolanki.cqpo.model.AuthenticationResponse;
 import com.iamdrjsolanki.cqpo.model.AuthenticationRequest;
+import com.iamdrjsolanki.cqpo.model.RefreshTokenRequest;
 import com.iamdrjsolanki.cqpo.model.UserProfile;
 import com.iamdrjsolanki.cqpo.util.JwtUtil;
 
@@ -24,8 +30,9 @@ public class AuthenticationService {
 	private final JwtUtil jwtUtil;
 	private final UserProfileService userProfileService;
 	private final CandidateQPObjecionService cqpoService;
+	private final RefreshTokenService refreshTokenService;
 
-	public AuthenticationReponse authenticate(AuthenticationRequest request) {
+	public AuthenticationResponse authenticate(AuthenticationRequest request) {
 		Authentication authenticate = authenticationManager
 										.authenticate(
 												new UsernamePasswordAuthenticationToken(
@@ -40,11 +47,36 @@ public class AuthenticationService {
 		UserProfile userProfile = userProfileService.getUserProile(request.getUsername());
 		CandidateEnrollmentDetailsDTO cedDto = cqpoService.getCandidateDetails(userProfile.getUsername());
 		
-		AuthenticationReponse res = new AuthenticationReponse(userProfile.getUsername(), userProfile.getRole(), jwt, cedDto);
-		
-		return res;
+		return AuthenticationResponse.builder()
+				.username(userProfile.getUsername())
+				.role(userProfile.getRole())
+				.jwt(jwt)
+				.cedDto(cedDto)
+				.expiresAt(Instant.now().plusMillis(jwtUtil.getExpirationTime()))
+				.refreshToken(refreshTokenService.generateRefreshToken().getToken())
+				.build();
 	}
 	
+	public boolean isLoggedIn() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return !(authentication instanceof AnonymousAuthenticationToken && authentication.isAuthenticated());
+	}
 	
+	public AuthenticationResponse refreshToken(@Valid RefreshTokenRequest refreshTokenReq) {
+		refreshTokenService.validateRefreshToken(refreshTokenReq.getRefreshToken());
+		String token = jwtUtil.generateTokenWithUsername(refreshTokenReq.getUsername());
+		
+		UserProfile userProfile = userProfileService.getUserProile(refreshTokenReq.getUsername());
+		CandidateEnrollmentDetailsDTO cedDto = cqpoService.getCandidateDetails(userProfile.getUsername());
+		
+		return AuthenticationResponse.builder()
+				.username(userProfile.getUsername())
+				.role(userProfile.getRole())
+				.jwt(token)
+				.cedDto(cedDto)
+				.expiresAt(Instant.now().plusMillis(jwtUtil.getExpirationTime()))
+				.refreshToken(refreshTokenReq.getRefreshToken())
+				.build();
+	}	
 
 }

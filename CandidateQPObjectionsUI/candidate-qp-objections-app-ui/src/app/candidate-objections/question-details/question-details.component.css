@@ -1,0 +1,48 @@
+table {
+    width: 100%;
+}
+td {
+    padding: 5px;
+    text-align:center;       
+}
+.questionDetails {
+    background-color: #0079D3;
+    border-color: #0079D3;
+    color: aliceblue;
+    fill: #0079D3;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 3px 16px;
+    opacity: 1;
+}
+#centeredDiv { 
+    margin-right: auto; 
+    margin-left: auto; 
+    width: 150px; 
+}
+
+#parent {
+    text-align:center;
+}
+.block {
+    height:150px;
+    width:400px;
+    text-align:left;
+}
+.center {
+    margin:auto;
+}
+.left {
+    margin:auto auto auto 0;
+    background-color:red;
+}
+.right {
+    margin:auto 0 auto auto;
+    background-color:yellow;
+}

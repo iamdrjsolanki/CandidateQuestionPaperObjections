@@ -1,9 +1,5 @@
 package com.iamdrjsolanki.cqpo.dto;
 
-import java.util.List;
-
-import com.iamdrjsolanki.cqpo.model.CandidateEnrollmentDetails;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +18,6 @@ public class QuestionPaperDetailsDTO {
 	private String qpdQuestionAnswerOption4;	
 	private String qpdQuestionCorrectAnswer;
 	private String qpdMarksAllotted;
-	private List<CandidateEnrollmentDetails> candidates;
+	private String qpdSubjectName;
 
 }

@@ -29,7 +29,7 @@ public class CandidateObjectionsController {
 	}
 	
 	@GetMapping("/objections/{candidateId}")
-	public ResponseEntity<?> getAllObjections(@PathVariable("candidateId") Long candidateId) {
+	public ResponseEntity<?> getCandidateObjections(@PathVariable("candidateId") Long candidateId) {
 		return new ResponseEntity<List<CandidateObjectionDetails>>(coService.getObjectionsByCandidateId(candidateId), HttpStatus.OK);
 	}
 	

@@ -1,7 +1,9 @@
 package com.iamdrjsolanki.cqpo.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,7 @@ public class CandidateQPObjecionService {
 		cedDto.setCedRollNo(ced.getCedRollNo());
 		cedDto.setSubjects(getSubjects(ced));
 		cedDto.setQuestions(getQuestions(ced));
+		cedDto.setSubjectsQuestionsMap(getSubjectQuestionsMap(cedDto.getQuestions()));
 
 		return cedDto;
 	}
@@ -59,10 +62,22 @@ public class CandidateQPObjecionService {
 			question.setQpdQuestionAnswerOption3(ced.getQuestions().get(i).getQpdQuestionAnswerOption3());
 			question.setQpdQuestionAnswerOption4(ced.getQuestions().get(i).getQpdQuestionAnswerOption4());
 			question.setQpdQuestionCorrectAnswer(ced.getQuestions().get(i).getQpdQuestionCorrectAnswer());
+			question.setQpdSubjectName(ced.getQuestions().get(i).getSubjectDetails().getSubjectName());
 			
 			questions.add(question);
 		}
 		return questions;
+	}
+	
+	private Map<String, QuestionPaperDetailsDTO> 
+		getSubjectQuestionsMap(List<QuestionPaperDetailsDTO> questions) {
+		
+		Map<String, QuestionPaperDetailsDTO> subjectsQuestionsMap = new HashMap<>();
+		for(int i=0; i<questions.size(); i++) {
+			String key = questions.get(i).getQpdSubjectName() + "^" + questions.get(i).getQpdQuestionNumber();
+			subjectsQuestionsMap.put(key, questions.get(i));
+		}
+		return subjectsQuestionsMap;
 	}
 
 }

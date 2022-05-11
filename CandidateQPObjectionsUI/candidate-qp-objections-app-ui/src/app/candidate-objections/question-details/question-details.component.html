@@ -1,0 +1,51 @@
+<h3>Question Summary</h3>
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td scope="row">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Select Subject</mat-label>
+                                <mat-select [(ngModel)]="selectedSubject" name="`subject" (selectionChange)="getSelectedSubjectDetails($event.value)">
+                                    <mat-option *ngFor="let subject of subjects" [value]="subject.subjectName">
+                                        {{ subject.subjectName }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td scope="row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Question Number</mat-label>
+                                <input matInput placeholder="Placeholder" #questionNo>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+            <div class="form-group row" id="centeredDiv">
+                <span>
+                    <button type="button" class="questionDetails" (click)="getQuestionDetails(questionNo.value)">
+                        Question Details
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="col-xs-6" id="parent">
+            <h3><b>Question Details</b></h3>
+            <div class="row block center" *ngIf="constructQuestAns">
+                <p><b> {{ questionNumber }}) {{ question }}</b></p>
+                <input type="radio" id="radioID" value="quesAnsOpt1" name="quesAnsOpt1" disabled>
+                {{ questionAnswerOption1 }} <br>
+                <input type="radio" id="radioID" value="quesAnsOpt2" name="quesAnsOpt2" disabled>
+                {{ questionAnswerOption4 }} <br>
+                <input type="radio" id="radioID" value="quesAnsOpt3" name="quesAnsOpt3" disabled>
+                {{ questionAnswerOption3 }} <br>
+                <input type="radio" id="radioID" value="quesAnsOpt4" name="quesAnsOpt4" disabled>
+                {{ questionAnswerOption4 }}
+            </div>
+        </div>
+    </div>
+</div>
